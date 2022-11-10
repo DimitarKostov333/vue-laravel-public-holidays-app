@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
-class PostController extends Controller
+class ApiController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,16 +15,12 @@ class PostController extends Controller
      */
     public function getPublicHolidays(Request $request)
     {
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('GET', 'https://kayaposoft.com/enrico/json/v2.0/?action=getHolidaysForYear&year=' . $request . '&country=ZAF');
+        // Set the api url
+        $url = config('app.holidays_url') . '?action=getHolidaysForYear&year=' . $request->year . '&country=ZAF';
 
-        if($response->getStatusCode() == 200){
-            return response()->json([
-                'success' => true,
-                'message' => 'List data post',
-                'data' => $posts
-            ], 200);
-        }
+        $response = Http::get($url);
+
+        return $response->json();
 
     }
 }
