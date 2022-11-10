@@ -7,6 +7,8 @@
 ## Installation
 <ul>
     <li>Fork this project.</li>
+    <li>Rename the <code>.env.example</code> file to just <code>.env</code>.</li>
+    <li>You might need to run <code>php artisan key:generate</code></li>
     <li>Inside the root laravel installation run <code>composer install</code></li>
     <li>Inside the <code>/frontend/</code> folder run <code>npm install</code></li>
     <li>Run the Laravel server with <code>php artisan serve</code> which should run on http://127.0.0.1:8000, the frontend application presumes this is the base uri for the api.</li>
