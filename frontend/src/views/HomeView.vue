@@ -1,106 +1,61 @@
 <template>
-    <main class="container flex items-center justify-center h-screen mx-auto">
-        <div class="flex flex-col">
-            <div class="overflow-x-auto">
-                <div class="p-1.5 w-full inline-block align-middle">
-                    <RouterLink to="/posts/create" class="p-2 text-white bg-blue-600"
-                    >Create</RouterLink
-                    >
-                    <div class="mt-3 overflow-hidden border rounded-lg">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-50">
-                            <tr>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase"
-                                >
-                                    ID
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase"
-                                >
-                                    Title
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase"
-                                >
-                                    Edit
-                                </th>
-                                <th
-                                    scope="col"
-                                    class="px-6 py-3 text-xs font-bold text-center text-gray-500 uppercase"
-                                >
-                                    Delete
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                            <tr v-for="post in posts" :key="post.id">
-                                <td
-                                    class="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap"
-                                >
-                                    {{ post.id }}
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                    {{ post.title }}
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                    <RouterLink
-                                        :to="{ name: 'posts.edit', params: { id: post.id } }"
-                                        class="text-green-500"
-                                    >EDIT</RouterLink
-                                    >
-                                </td>
-                                <td class="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
-                                    <button
-                                        @click.prevent="postDelete(post.id, index)"
-                                        class="text-red-600"
-                                    >
-                                        DELETE
-                                    </button>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="row">
+            <div class="mb-5 mt-5 col-3">
+                <input type="date" class="form-control" name="year" min="1990" max="2030" step="1" value="{{ new Date().getFullYear() }}"/>
             </div>
+            <table class="table table-responsive col-12">
+                <thead>
+                    <tr>
+                        <th scope="col">
+                            Date
+                        </th>
+                        <th scope="col">
+                            Holiday Name
+                        </th>
+                        <th scope="col">
+                            Holiday Type
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    <tr v-for="date in dates" :key="date.name.text">
+                        <td class="whitespace-nowrap">
+                            {{ date.date.day }}-{{ date.date.month }}-{{ date.date.year }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ post.name.text }}
+                        </td>
+                        <td class="whitespace-nowrap">
+                            {{ post.holidayType }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </main>
+    </div>
 </template>
 <script>
-import axios from 'axios';
 import { onMounted, ref } from 'vue';
+
 export default {
     setup() {
-        let posts = ref([]);
+        let dates = ref([]);
 
         onMounted(() => {
             // fetch api from laravel backend
             axios
-                .get('http://localhost:8000/api/posts')
+                .get('public-holidays')
                 .then((res) => {
-                    posts.value = res.data.data;
+                    dates.value = res.data.data;
                 })
                 .catch((error) => {
                     console.log(error.res.data);
                 });
         });
-        function postDelete(id, index) {
-            axios
-                .delete(`http://localhost:8000/api/posts/${id}`)
-                .then(() => {
-                    posts.value.splice(index, 1);
-                })
-                .catch((error) => {
-                    console.log(error.response.data);
-                });
-        }
+
         return {
-            posts,
-            postDelete,
+            dates
         };
     },
 };

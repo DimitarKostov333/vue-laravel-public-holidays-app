@@ -18,9 +18,10 @@ class ApiController extends Controller
         // Set the api url
         $url = config('app.holidays_url') . '?action=getHolidaysForYear&year=' . $request->year . '&country=ZAF';
 
+        // Send the request
         $response = Http::get($url);
 
+        // Return the json response
         return $response->json();
-
     }
 }
