@@ -12,6 +12,9 @@
         "vite": "^3.0.0"
     },
     "dependencies": {
-        "@popperjs/core": "^2.11.6"
+        "@popperjs/core": "^2.11.6",
+        "bootstrap": "^5.2.2",
+        "bootstrap-vue": "^2.23.1",
+        "vue": "^3.2.44"
     }
 }

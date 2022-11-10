@@ -1,10 +1,8 @@
 <template>
     <div class="container">
-        <div class="row">
-            <div class="mb-5 mt-5 col-3">
-                <input type="date" class="form-control" name="year" min="1990" max="2030" step="1" value="{{ new Date().getFullYear() }}"/>
-            </div>
-            <table class="table table-responsive col-12">
+        <div class="col-12">
+            <DatePicker />
+            <table class="table table-striped table-dark table-responsive ">
                 <thead>
                     <tr>
                         <th scope="col">
@@ -24,10 +22,10 @@
                             {{ date.date.day }}-{{ date.date.month }}-{{ date.date.year }}
                         </td>
                         <td class="whitespace-nowrap">
-                            {{ post.name.text }}
+                            {{ date.name[0].text }}
                         </td>
                         <td class="whitespace-nowrap">
-                            {{ post.holidayType }}
+                            {{ date.holidayType }}
                         </td>
                     </tr>
                 </tbody>
@@ -37,8 +35,11 @@
 </template>
 <script>
 import { onMounted, ref } from 'vue';
+import axios from 'axios'
+import DatePicker from "@/components/DatePicker.vue";
 
 export default {
+    components:{DatePicker},
     setup() {
         let dates = ref([]);
 
@@ -47,7 +48,7 @@ export default {
             axios
                 .get('public-holidays')
                 .then((res) => {
-                    dates.value = res.data.data;
+                    dates.value = res.data;
                 })
                 .catch((error) => {
                     console.log(error.res.data);
