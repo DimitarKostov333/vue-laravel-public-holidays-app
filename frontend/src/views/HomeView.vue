@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="col-12">
-            <DatePicker />
+            <DatePicker :getDates="getDate" ></DatePicker>
             <table class="table table-striped table-dark table-responsive ">
                 <thead>
                     <tr>
@@ -34,13 +34,37 @@
     </div>
 </template>
 <script>
-import { onMounted, ref } from 'vue';
-import axios from 'axios'
+import {onMounted, ref} from 'vue';
+import axios from 'axios';
 import DatePicker from "@/components/DatePicker.vue";
 
 export default {
     components:{DatePicker},
-    setup() {
+    methods: {
+        getDate(date) {
+            let dates = ref([]);
+
+            // Only get the year from input
+            let getYear = date.split("-");
+
+            // fetch api from laravel backend
+            axios
+                .get('public-holidays',{params:{'year':getYear[0]}})
+                .then((response) => {
+                    dates.value = response.data;
+                    console.log(dates.value)
+                })
+                .catch((error) => {
+                    console.log(error.response);
+                });
+
+
+            return {
+                dates
+            };
+        }
+    },
+    setup(props) {
         let dates = ref([]);
 
         onMounted(() => {
@@ -58,6 +82,6 @@ export default {
         return {
             dates
         };
-    },
+    }
 };
 </script>

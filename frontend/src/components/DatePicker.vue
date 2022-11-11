@@ -1,27 +1,26 @@
 <template>
     <div class="mb-5 mt-5 col-3">
-        <Datepicker v-model="date"></Datepicker>
+        <input type="date"
+               class="form-control"
+               v-on:change="getDates(holidayInput)"
+               v-model="holidayInput"/>
     </div>
 </template>
 
 <script>
-import { ref } from 'vue';
-import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
+
+import {ref, reactive, toRefs} from "vue";
 
 export default {
-    components: { Datepicker },
+    name: 'DatePicker',
     props: {
-        date:{
-            type: Date,
-            default: "2022"
-        }
+      getDates:{
+          type:Function
+      }
     },
-    setup() {
-        const date = ref();
-
+    data(){
         return {
-            date
+            holidayInput: ""
         }
     }
 };
