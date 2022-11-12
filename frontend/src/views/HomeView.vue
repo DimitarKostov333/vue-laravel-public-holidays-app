@@ -1,7 +1,14 @@
 <template>
     <div class="container">
         <div class="col-12">
-            <DatePicker :getDates="getDate" ></DatePicker>
+            <div class="mb-5 mt-5 col-3">
+                <label>Select public holiday year</label>
+                <input type="date"
+                       class="form-control"
+                       @change="selectDate(date)"
+                       v-model="date"
+                />
+            </div>
             <table class="table table-striped table-dark table-responsive ">
                 <thead>
                     <tr>
@@ -16,9 +23,9 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-gray-200">
-                    <tr v-for="date in dates" :key="date.name.text">
-                        <td class="whitespace-nowrap">
+                <tbody class="divide-y divide-gray-200" id="table-body">
+                    <tr v-for="date in dates" :key="date.date.day">
+                        <td class="whitespace-nowrap" >
                             {{ date.date.day }}-{{ date.date.month }}-{{ date.date.year }}
                         </td>
                         <td class="whitespace-nowrap">
@@ -33,55 +40,48 @@
         </div>
     </div>
 </template>
-<script>
-import {onMounted, ref} from 'vue';
+<script setup>
+import {ref, onMounted} from 'vue';
 import axios from 'axios';
-import DatePicker from "@/components/DatePicker.vue";
 
-export default {
-    components:{DatePicker},
-    methods: {
-        getDate(date) {
-            let dates = ref([]);
+// Set empty reactive property for date input
+let date = ref('');
 
-            // Only get the year from input
-            let getYear = date.split("-");
+// Set reactive property for dates collection
+const dates = ref({});
 
-            // fetch api from laravel backend
-            axios
-                .get('public-holidays',{params:{'year':getYear[0]}})
-                .then((response) => {
-                    dates.value = response.data;
-                    console.log(dates.value)
-                })
-                .catch((error) => {
-                    console.log(error.response);
-                });
+// Create select date function
+const selectDate = (date) => {
+    // Only get the year from input
+    let getYear = date.split("-");
 
-
-            return {
-                dates
-            };
-        }
-    },
-    setup(props) {
-        let dates = ref([]);
-
-        onMounted(() => {
-            // fetch api from laravel backend
-            axios
-                .get('public-holidays')
-                .then((res) => {
-                    dates.value = res.data;
-                })
-                .catch((error) => {
-                    console.log(error.res.data);
-                });
+    // fetch data from laravel api
+    axios
+        .get('public-holidays',{params:{'year':getYear[0]}})
+        .then((response) => {
+            // Update the dates property with new data received from the api
+            dates.value = response.data
+        })
+        .catch((error) => {
+            // Log error
+            console.log(error.response);
         });
+}
 
-        return {
-            dates
-        };
+onMounted(() => {
+    // If dates object is empty set default value from api
+    if(Object.keys(dates.value).length === 0
+        && dates.value.constructor === Object){
+        axios
+            .get('public-holidays')
+            .then((response) => {
+                // Update the dates property with new data received from the api
+                dates.value = response.data
+            })
+            .catch((error) => {
+                // Log error
+                console.log(error.response);
+            });
     }
-};
+})
 </script>
