@@ -53,11 +53,18 @@ const dates = ref({});
 // Create select date function
 const selectDate = (date) => {
     // Only get the year from input
-    let getYear = date.split("-");
+    let getSelectedYear = date.split("-");
 
-    // fetch data from laravel api
+    // fetch data from laravel api and update dates object
+    ajaxRequest(getSelectedYear[0]);
+}
+
+// Reusable ajax function for getting api data
+const ajaxRequest = (year = new Date().getFullYear()) => {
     axios
-        .get('public-holidays',{params:{'year':getYear[0]}})
+        .get('public-holidays', {
+            params:{'year': year}
+        })
         .then((response) => {
             // Update the dates property with new data received from the api
             dates.value = response.data
@@ -72,16 +79,7 @@ onMounted(() => {
     // If dates object is empty set default value from api
     if(Object.keys(dates.value).length === 0
         && dates.value.constructor === Object){
-        axios
-            .get('public-holidays')
-            .then((response) => {
-                // Update the dates property with new data received from the api
-                dates.value = response.data
-            })
-            .catch((error) => {
-                // Log error
-                console.log(error.response);
-            });
+        ajaxRequest();
     }
 })
 </script>
