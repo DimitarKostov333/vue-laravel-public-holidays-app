@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
 
 class RunProject extends Command
 {
@@ -27,10 +28,5 @@ class RunProject extends Command
      */
     public function handle()
     {
-        exec('composer install');
-        exec('php artisan serve');
-        exec('cd frontend');
-        exec('npm install');
-        exec('npm run dev');
     }
 }
