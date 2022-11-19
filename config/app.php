@@ -17,8 +17,6 @@ return [
 
     'name' => env('APP_NAME', 'Laravel'),
 
-    'holidays_url' => env('GUZZLE_URL'),
-
     /*
     |--------------------------------------------------------------------------
     | Application Environment

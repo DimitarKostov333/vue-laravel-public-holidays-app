@@ -12,15 +12,9 @@
             <table class="table table-striped table-dark table-responsive ">
                 <thead>
                     <tr>
-                        <th scope="col">
-                            Date
-                        </th>
-                        <th scope="col">
-                            Holiday Name
-                        </th>
-                        <th scope="col">
-                            Holiday Type
-                        </th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Holiday Name</th>
+                        <th scope="col">Holiday Type</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200" id="table-body">
@@ -40,6 +34,8 @@
         </div>
     </div>
 </template>
+
+
 <script setup>
 import {ref, onMounted} from 'vue';
 import axios from 'axios';
