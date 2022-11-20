@@ -6,12 +6,12 @@
                     <label>Select public holiday</label>
                     <input type="date"
                            class="form-control"
-                           @change="selectDate(dateInput)"
+                           @change="selectDateCountry(dateInput)"
                            v-model="dateInput"/>
                 </div>
                 <div class="mb-4 mt-4 col-3">
                     <label>Select country</label>
-                    <select class="form-control" @change="selectDate(dateInput, countryInput)" v-model="countryInput">
+                    <select class="form-control" @change="selectDateCountry(dateInput, countryInput)" v-model="countryInput">
                         <option v-for="allCountries in allCountries"
                                 :value="allCountries.cca3"
                                 :key="allCountries.cca3">
@@ -39,7 +39,7 @@ const holidays = ref([]);
 const allCountries = ref({});
 
 // Compute the date input
-const selectDate = (date, country) => {
+const selectDateCountry = (date, country = 'ZAF') => {
     // Only get the year from input string
     ajaxRequest(date.split("-")[0], country);
 }
