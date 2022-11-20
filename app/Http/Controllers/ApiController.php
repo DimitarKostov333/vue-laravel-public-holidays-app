@@ -15,7 +15,7 @@ class ApiController extends Controller
      */
     public function getPublicHolidays(Request $request) : array
     {
-        // Set the api url with the year input
+        // Set the api url with the year & country input
         $url = env('HOLIDAY_API_URL') . $request->year
                             . '&country=' . $request->country;
 
