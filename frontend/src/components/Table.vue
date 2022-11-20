@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-striped table-responsive ">
+    <table class="table table-striped table-responsive">
         <thead>
             <tr>
                 <th class="p-2 text-center" scope="col">Date</th>
@@ -20,7 +20,7 @@
                 </td>
             </tr>
             <tr v-else>
-                <td class="p-2 text-center" colspan="3">Data pending...</td>
+                <td class="p-2 text-center" colspan="3">Data pending.</td>
             </tr>
         </tbody>
     </table>

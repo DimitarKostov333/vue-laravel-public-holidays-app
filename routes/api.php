@@ -16,3 +16,4 @@ use App\Http\Controllers\ApiController;
 */
 
 Route::get('/public-holidays', [ApiController::class, 'getPublicHolidays']);
+Route::get('/all-countries', [ApiController::class, 'getAllCountries']);

@@ -1,15 +1,28 @@
 <template>
     <div class="container">
         <div class="col-12">
-            <div class="mb-5 mt-5 col-3">
-                <label>Select public holiday year</label>
-                <input type="date"
-                       class="form-control"
-                       @change="selectDate(dateInput)"
-                       v-model="dateInput"
-                />
+            <div class="row">
+                <div class="mb-5 mt-4 col-3">
+                    <label>Select public holiday</label>
+                    <input type="date"
+                           class="form-control"
+                           @change="selectDate(dateInput)"
+                           v-model="dateInput"/>
+                </div>
+                <div class="mb-5 mt-4 col-3">
+                    <label>Select country</label>
+                    <select class="form-control" @change="selectDate(dateInput, countryInput)" v-model="countryInput">
+                        <option v-for="allCountries in allCountries"
+                                :value="allCountries.cca3"
+                                :key="allCountries.cca3">
+                            {{ allCountries.name.common }}
+                        </option>
+                    </select>
+                </div>
             </div>
-            <Table :dates="dates"></Table>
+        </div>
+        <div class="col-12">
+            <Table :dates="holidays"></Table>
         </div>
     </div>
 </template>
@@ -21,37 +34,37 @@ import axios from 'axios';
 import Table from "@/components/Table.vue";
 
 let dateInput = ref('');
-const holidays = ref({});
+let countryInput = ref('');
+const holidays = ref([]);
+const allCountries = ref({});
 
 // Compute the date input
-const selectDate = (date) => {
+const selectDate = (date, country) => {
     // Only get the year from input string
-    let getYear = date.split("-");
-    ajaxRequest(getYear[0]);
+    ajaxRequest(date.split("-")[0], country);
 }
 
 // Reusable ajax function for getting api data
-const ajaxRequest = (year = new Date().getFullYear()) => {
+const ajaxRequest = (year = new Date().getFullYear(), country = 'ZAF') => {
     axios
         .get('public-holidays', {
-            params:{'year': year}
-        })
-        .then((response) => {
+            params: {'year': year, 'country': country}
+        }).then((response) => {
             // Update the holidays property with new data from the api
-            holidays.value = response.data
+            holidays.value = response.data;
         })
-        .catch((error) => {
-            // Log error
-            console.log(error.response);
-        });
+}
+
+const getAllCountries = () => {
+    axios
+        .get('all-countries').then((response) => {
+        allCountries.value = response.data;
+    })
 }
 
 onMounted(() => {
-    // If holiday object is empty get current year holidays by default
-    if(Object.keys(holidays.value).length === 0 &&
-        holidays.value.constructor === Object)
-    {
-        ajaxRequest();
-    }
+    // Get default data set
+    getAllCountries();
+    ajaxRequest();
 })
 </script>
