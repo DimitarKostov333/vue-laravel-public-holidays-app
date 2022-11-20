@@ -11,12 +11,16 @@
                 </div>
                 <div class="mb-4 mt-4 col-3">
                     <label>Select country</label>
-                    <select class="form-control" @change="selectDateCountry(dateInput, countryInput)" v-model="countryInput">
-                        <option v-for="allCountries in allCountries"
-                                :value="allCountries.cca3"
-                                :key="allCountries.cca3">
-                            {{ allCountries.name.common }}
+                    <select class="form-control"
+                            @change="selectDateCountry(dateInput, countryInput)"
+                            v-model="countryInput">
+
+                        <option v-for="country in allCountries"
+                                :value="country.cca3"
+                                :key="country.cca3">
+                            {{ country.name.common }}
                         </option>
+
                     </select>
                 </div>
             </div>
@@ -26,7 +30,6 @@
         </div>
     </div>
 </template>
-
 
 <script setup>
 import {ref, onMounted} from 'vue';
