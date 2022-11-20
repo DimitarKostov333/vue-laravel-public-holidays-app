@@ -2,14 +2,14 @@
     <div class="container">
         <div class="col-12">
             <div class="row">
-                <div class="mb-5 mt-4 col-3">
+                <div class="mb-4 mt-4 col-3">
                     <label>Select public holiday</label>
                     <input type="date"
                            class="form-control"
                            @change="selectDate(dateInput)"
                            v-model="dateInput"/>
                 </div>
-                <div class="mb-5 mt-4 col-3">
+                <div class="mb-4 mt-4 col-3">
                     <label>Select country</label>
                     <select class="form-control" @change="selectDate(dateInput, countryInput)" v-model="countryInput">
                         <option v-for="allCountries in allCountries"

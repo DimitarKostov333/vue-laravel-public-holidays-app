@@ -20,7 +20,7 @@
                 </td>
             </tr>
             <tr v-else>
-                <td class="p-2 text-center" colspan="3">Data pending.</td>
+                <td class="p-2 text-center" colspan="3">Data pending...</td>
             </tr>
         </tbody>
     </table>
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style scoped>
-th {
+thead > tr > th{
     background-color: deepskyblue;
     color: white;
 }
